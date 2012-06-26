@@ -32,7 +32,7 @@ namespace femtozip {
  */
 class IntSet {
 private:
-    static const float load_factor = .7;
+    static const float load_factor;
 
     int *buckets;
     int *bucket_end;
@@ -109,6 +109,7 @@ public:
         }
     }
 };
+const float IntSet::load_factor = 0.7;
 
 }
 

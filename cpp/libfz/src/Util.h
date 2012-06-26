@@ -17,17 +17,32 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
-#include <sys/time.h>
+#include <ctime>
+
+#ifdef WIN32
+//#include <windows.h>
+#endif
 
 namespace femtozip {
 
 class Util {
 public:
     static long long getMillis() {
-        timeval tim;
+#ifdef WIN32
+/*
+		LARGE_INTEGER freq, t;
+		QueryPerformanceFrequency(&freq);
+		QueryPerformanceCounter(&t);
+		return t.QuadPart/(double)freq.QuadPart;        
+*/
+	return 42;
+#else
+		timeval tim;
         gettimeofday(&tim, NULL);
         return tim.tv_sec * 1000LL + tim.tv_usec / 1000LL;
+#endif
     }
+	
 };
 
 }

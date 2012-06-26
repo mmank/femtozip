@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<!-- $Id$ -->
+
+<makefile>	
+	<lib id="femtozip">
+		<sources>libfz\src\CStringDocumentList.cpp
+libfz\src\Codeword.cpp
+libfz\src\CompressionModel.cpp
+libfz\src\DataIO.cpp
+libfz\src\DecodeTable.cpp
+libfz\src\DictionaryOptimizer.cpp
+libfz\src\DocumentList.cpp
+libfz\src\FemtoZipCompressionModel.cpp
+libfz\src\FileDocumentList.cpp
+libfz\src\FileUtil.cpp
+libfz\src\FrequencyHuffmanModel.cpp
+libfz\src\HuffmanDecoder.cpp
+libfz\src\HuffmanEncoder.cpp
+libfz\src\PrefixHash.cpp
+libfz\src\PureHuffmanCompressionModel.cpp
+libfz\src\SamplingDocumentList.cpp
+libfz\src\Substring.cpp
+libfz\src\SubstringPacker.cpp
+libfz\src\SubstringUnpacker.cpp
+libfz\src\VerboseStringConsumer.cpp
+libfz\src\femtozip.cpp
+libfz\src\lcp.c
+libfz\src\sarray.c
+</sources>
+	</lib>
+
+
+</makefile>

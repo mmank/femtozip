@@ -44,10 +44,18 @@ CompressionModel *CompressionModel::createModel(const string& type) {
         return new FemtoZipCompressionModel();
     }
     else if (type == "GZip") {
+#ifdef HAVE_ZLIB
         return new GZipCompressionModel();
+#else
+		throw("gzip not supported");
+#endif
     }
     else if (type == "GZipDictionary") {
+#ifdef HAVE_ZLIB
         return new GZipDictionaryCompressionModel();
+#else
+		throw("gzip not supported");
+#endif
     }
     else {
         throw runtime_error("Unknown model");
