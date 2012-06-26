@@ -25,6 +25,9 @@ CXXFLAGS =
 # Standard preprocessor flags (common for CC and CXX) 
 CPPFLAGS = 
 
+#  [debug,release]
+BUILD = release
+
 
 
 # -------------------------------------------------------------------------
@@ -33,119 +36,153 @@ CPPFLAGS =
 
 ### Variables: ###
 
-FEMTOZIP_CFLAGS =  /MD /DWIN32  $(CPPFLAGS) $(CFLAGS)
-FEMTOZIP_CXXFLAGS =  /MD /DWIN32  /GR /EHsc $(CPPFLAGS) $(CXXFLAGS)
-FEMTOZIP_OBJECTS =  \
-	femtozip_CStringDocumentList.obj \
-	femtozip_Codeword.obj \
-	femtozip_CompressionModel.obj \
-	femtozip_DataIO.obj \
-	femtozip_DecodeTable.obj \
-	femtozip_DictionaryOptimizer.obj \
-	femtozip_DocumentList.obj \
-	femtozip_FemtoZipCompressionModel.obj \
-	femtozip_FileDocumentList.obj \
-	femtozip_FileUtil.obj \
-	femtozip_FrequencyHuffmanModel.obj \
-	femtozip_HuffmanDecoder.obj \
-	femtozip_HuffmanEncoder.obj \
-	femtozip_PrefixHash.obj \
-	femtozip_PureHuffmanCompressionModel.obj \
-	femtozip_SamplingDocumentList.obj \
-	femtozip_Substring.obj \
-	femtozip_SubstringPacker.obj \
-	femtozip_SubstringUnpacker.obj \
-	femtozip_VerboseStringConsumer.obj \
-	femtozip_femtozip.obj \
-	femtozip_lcp.obj \
-	femtozip_sarray.obj
+LIBFZ_CFLAGS = /MD$(__DEBUG_FLAG_7) /DWIN32 $(__OPTIMIZE_FLAG_2) \
+	$(__DEBUG_FLAG_3) /Fd$(LIBNAME).pdb $(____DEBUG_FLAG_6_p) $(CPPFLAGS) \
+	$(CFLAGS)
+LIBFZ_CXXFLAGS = /MD$(__DEBUG_FLAG_7) /DWIN32 $(__OPTIMIZE_FLAG_2) \
+	$(__DEBUG_FLAG_3) /Fd$(LIBNAME).pdb $(____DEBUG_FLAG_6_p) /GR /EHsc \
+	$(CPPFLAGS) $(CXXFLAGS)
+LIBFZ_OBJECTS =  \
+	libfz_CStringDocumentList.obj \
+	libfz_Codeword.obj \
+	libfz_CompressionModel.obj \
+	libfz_DataIO.obj \
+	libfz_DecodeTable.obj \
+	libfz_DictionaryOptimizer.obj \
+	libfz_DocumentList.obj \
+	libfz_FemtoZipCompressionModel.obj \
+	libfz_FileDocumentList.obj \
+	libfz_FileUtil.obj \
+	libfz_FrequencyHuffmanModel.obj \
+	libfz_HuffmanDecoder.obj \
+	libfz_HuffmanEncoder.obj \
+	libfz_PrefixHash.obj \
+	libfz_PureHuffmanCompressionModel.obj \
+	libfz_SamplingDocumentList.obj \
+	libfz_Substring.obj \
+	libfz_SubstringPacker.obj \
+	libfz_SubstringUnpacker.obj \
+	libfz_VerboseStringConsumer.obj \
+	libfz_femtozip.obj \
+	libfz_lcp.obj \
+	libfz_sarray.obj
 
 ### Conditionally set variables: ###
 
+!if "$(BUILD)" == "debug"
+LIBNAME = libfzd
+!endif
+!if "$(BUILD)" == "release"
+LIBNAME = libfz
+!endif
+!if "$(BUILD)" == "debug"
+__OPTIMIZE_FLAG_2 = /Od
+!endif
+!if "$(BUILD)" == "release"
+__OPTIMIZE_FLAG_2 = /O2
+!endif
+!if "$(BUILD)" == "debug"
+__DEBUG_FLAG_3 = 
+!endif
+!if "$(BUILD)" == "release"
+__DEBUG_FLAG_3 = /Zi
+!endif
+!if "$(BUILD)" == "debug"
+____DEBUG_FLAG_6_p = 
+!endif
+!if "$(BUILD)" == "release"
+____DEBUG_FLAG_6_p = /D_DEBUG
+!endif
+!if "$(BUILD)" == "debug"
+__DEBUG_FLAG_7 = 
+!endif
+!if "$(BUILD)" == "release"
+__DEBUG_FLAG_7 = d
+!endif
 
 
 ### Targets: ###
 
-all: femtozip.lib
+all: $(LIBNAME).lib
 
 clean: 
 	-if exist .\*.obj del .\*.obj
 	-if exist .\*.res del .\*.res
 	-if exist .\*.pch del .\*.pch
-	-if exist femtozip.lib del femtozip.lib
+	-if exist $(LIBNAME).lib del $(LIBNAME).lib
 
-femtozip.lib: $(FEMTOZIP_OBJECTS)
+$(LIBNAME).lib: $(LIBFZ_OBJECTS)
 	if exist $@ del $@
 	link /LIB /NOLOGO /OUT:$@ @<<
-	$(FEMTOZIP_OBJECTS)
+	$(LIBFZ_OBJECTS)
 <<
 
-femtozip_CStringDocumentList.obj: .\libfz\src\CStringDocumentList.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\CStringDocumentList.cpp
+libfz_CStringDocumentList.obj: .\libfz\src\CStringDocumentList.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\CStringDocumentList.cpp
 
-femtozip_Codeword.obj: .\libfz\src\Codeword.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\Codeword.cpp
+libfz_Codeword.obj: .\libfz\src\Codeword.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\Codeword.cpp
 
-femtozip_CompressionModel.obj: .\libfz\src\CompressionModel.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\CompressionModel.cpp
+libfz_CompressionModel.obj: .\libfz\src\CompressionModel.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\CompressionModel.cpp
 
-femtozip_DataIO.obj: .\libfz\src\DataIO.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\DataIO.cpp
+libfz_DataIO.obj: .\libfz\src\DataIO.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\DataIO.cpp
 
-femtozip_DecodeTable.obj: .\libfz\src\DecodeTable.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\DecodeTable.cpp
+libfz_DecodeTable.obj: .\libfz\src\DecodeTable.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\DecodeTable.cpp
 
-femtozip_DictionaryOptimizer.obj: .\libfz\src\DictionaryOptimizer.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\DictionaryOptimizer.cpp
+libfz_DictionaryOptimizer.obj: .\libfz\src\DictionaryOptimizer.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\DictionaryOptimizer.cpp
 
-femtozip_DocumentList.obj: .\libfz\src\DocumentList.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\DocumentList.cpp
+libfz_DocumentList.obj: .\libfz\src\DocumentList.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\DocumentList.cpp
 
-femtozip_FemtoZipCompressionModel.obj: .\libfz\src\FemtoZipCompressionModel.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\FemtoZipCompressionModel.cpp
+libfz_FemtoZipCompressionModel.obj: .\libfz\src\FemtoZipCompressionModel.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\FemtoZipCompressionModel.cpp
 
-femtozip_FileDocumentList.obj: .\libfz\src\FileDocumentList.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\FileDocumentList.cpp
+libfz_FileDocumentList.obj: .\libfz\src\FileDocumentList.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\FileDocumentList.cpp
 
-femtozip_FileUtil.obj: .\libfz\src\FileUtil.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\FileUtil.cpp
+libfz_FileUtil.obj: .\libfz\src\FileUtil.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\FileUtil.cpp
 
-femtozip_FrequencyHuffmanModel.obj: .\libfz\src\FrequencyHuffmanModel.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\FrequencyHuffmanModel.cpp
+libfz_FrequencyHuffmanModel.obj: .\libfz\src\FrequencyHuffmanModel.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\FrequencyHuffmanModel.cpp
 
-femtozip_HuffmanDecoder.obj: .\libfz\src\HuffmanDecoder.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\HuffmanDecoder.cpp
+libfz_HuffmanDecoder.obj: .\libfz\src\HuffmanDecoder.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\HuffmanDecoder.cpp
 
-femtozip_HuffmanEncoder.obj: .\libfz\src\HuffmanEncoder.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\HuffmanEncoder.cpp
+libfz_HuffmanEncoder.obj: .\libfz\src\HuffmanEncoder.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\HuffmanEncoder.cpp
 
-femtozip_PrefixHash.obj: .\libfz\src\PrefixHash.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\PrefixHash.cpp
+libfz_PrefixHash.obj: .\libfz\src\PrefixHash.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\PrefixHash.cpp
 
-femtozip_PureHuffmanCompressionModel.obj: .\libfz\src\PureHuffmanCompressionModel.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\PureHuffmanCompressionModel.cpp
+libfz_PureHuffmanCompressionModel.obj: .\libfz\src\PureHuffmanCompressionModel.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\PureHuffmanCompressionModel.cpp
 
-femtozip_SamplingDocumentList.obj: .\libfz\src\SamplingDocumentList.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\SamplingDocumentList.cpp
+libfz_SamplingDocumentList.obj: .\libfz\src\SamplingDocumentList.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\SamplingDocumentList.cpp
 
-femtozip_Substring.obj: .\libfz\src\Substring.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\Substring.cpp
+libfz_Substring.obj: .\libfz\src\Substring.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\Substring.cpp
 
-femtozip_SubstringPacker.obj: .\libfz\src\SubstringPacker.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\SubstringPacker.cpp
+libfz_SubstringPacker.obj: .\libfz\src\SubstringPacker.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\SubstringPacker.cpp
 
-femtozip_SubstringUnpacker.obj: .\libfz\src\SubstringUnpacker.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\SubstringUnpacker.cpp
+libfz_SubstringUnpacker.obj: .\libfz\src\SubstringUnpacker.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\SubstringUnpacker.cpp
 
-femtozip_VerboseStringConsumer.obj: .\libfz\src\VerboseStringConsumer.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\VerboseStringConsumer.cpp
+libfz_VerboseStringConsumer.obj: .\libfz\src\VerboseStringConsumer.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\VerboseStringConsumer.cpp
 
-femtozip_femtozip.obj: .\libfz\src\femtozip.cpp
-	$(CXX) /c /nologo /TP /Fo$@ $(FEMTOZIP_CXXFLAGS) .\libfz\src\femtozip.cpp
+libfz_femtozip.obj: .\libfz\src\femtozip.cpp
+	$(CXX) /c /nologo /TP /Fo$@ $(LIBFZ_CXXFLAGS) .\libfz\src\femtozip.cpp
 
-femtozip_lcp.obj: .\libfz\src\lcp.c
-	$(CC) /c /nologo /TC /Fo$@ $(FEMTOZIP_CFLAGS) .\libfz\src\lcp.c
+libfz_lcp.obj: .\libfz\src\lcp.c
+	$(CC) /c /nologo /TC /Fo$@ $(LIBFZ_CFLAGS) .\libfz\src\lcp.c
 
-femtozip_sarray.obj: .\libfz\src\sarray.c
-	$(CC) /c /nologo /TC /Fo$@ $(FEMTOZIP_CFLAGS) .\libfz\src\sarray.c
+libfz_sarray.obj: .\libfz\src\sarray.c
+	$(CC) /c /nologo /TC /Fo$@ $(LIBFZ_CFLAGS) .\libfz\src\sarray.c
 

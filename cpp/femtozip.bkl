@@ -2,32 +2,56 @@
 <!-- $Id$ -->
 
 <makefile>	
-	<lib id="femtozip">
-		<sources>libfz\src\CStringDocumentList.cpp
-libfz\src\Codeword.cpp
-libfz\src\CompressionModel.cpp
-libfz\src\DataIO.cpp
-libfz\src\DecodeTable.cpp
-libfz\src\DictionaryOptimizer.cpp
-libfz\src\DocumentList.cpp
-libfz\src\FemtoZipCompressionModel.cpp
-libfz\src\FileDocumentList.cpp
-libfz\src\FileUtil.cpp
-libfz\src\FrequencyHuffmanModel.cpp
-libfz\src\HuffmanDecoder.cpp
-libfz\src\HuffmanEncoder.cpp
-libfz\src\PrefixHash.cpp
-libfz\src\PureHuffmanCompressionModel.cpp
-libfz\src\SamplingDocumentList.cpp
-libfz\src\Substring.cpp
-libfz\src\SubstringPacker.cpp
-libfz\src\SubstringUnpacker.cpp
-libfz\src\VerboseStringConsumer.cpp
-libfz\src\femtozip.cpp
-libfz\src\lcp.c
-libfz\src\sarray.c
-</sources>
+	<include file="presets/simple.bkl"/>
+	<option name="BUILD">
+	  <values>debug,release</values>
+	  <default-value>release</default-value>
+	</option>	
+	<set var="OPTIMIZE_FLAG">
+	  <if cond="BUILD=='release'">speed</if>
+	  <if cond="BUILD=='debug'">off</if>
+	</set>
+	<set var="DEBUG_FLAG">
+	  <if cond="BUILD=='release'">on</if>
+	  <if cond="BUILD=='debug'">off</if>
+	</set>
+	<set var="LIBNAME">
+	  <if cond="BUILD=='release'">libfz</if>
+	  <if cond="BUILD=='debug'">libfzd</if>
+	</set>
+
+	
+	<lib id="libfz">
+		<optimize>$(OPTIMIZE_FLAG)</optimize>
+		<debug-info>$(DEBUG_FLAG)</debug-info>
+		<debug-runtime-libs>$(DEBUG_FLAG)</debug-runtime-libs>
+		<debug-info-edit-and-continue>$(DEBUG_FLAG)</debug-info-edit-and-continue>
+		<libname>$(LIBNAME)</libname>
+		<sources>
+			libfz\src\CStringDocumentList.cpp
+			libfz\src\Codeword.cpp
+			libfz\src\CompressionModel.cpp
+			libfz\src\DataIO.cpp
+			libfz\src\DecodeTable.cpp
+			libfz\src\DictionaryOptimizer.cpp
+			libfz\src\DocumentList.cpp
+			libfz\src\FemtoZipCompressionModel.cpp
+			libfz\src\FileDocumentList.cpp
+			libfz\src\FileUtil.cpp
+			libfz\src\FrequencyHuffmanModel.cpp
+			libfz\src\HuffmanDecoder.cpp
+			libfz\src\HuffmanEncoder.cpp
+			libfz\src\PrefixHash.cpp
+			libfz\src\PureHuffmanCompressionModel.cpp
+			libfz\src\SamplingDocumentList.cpp
+			libfz\src\Substring.cpp
+			libfz\src\SubstringPacker.cpp
+			libfz\src\SubstringUnpacker.cpp
+			libfz\src\VerboseStringConsumer.cpp
+			libfz\src\femtozip.cpp
+			libfz\src\lcp.c
+			libfz\src\sarray.c
+		</sources>
 	</lib>
-
-
+	
 </makefile>
