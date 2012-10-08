@@ -20,8 +20,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#ifndef WIN32
 #include <pthread.h>
-#include <sys/time.h>
+#endif
+#include <ctime>
 #include <string.h>
 #include <stdlib.h>
 #include <FileDocumentList.h>
@@ -38,8 +40,6 @@
 #include <CompressionModel.h>
 #include <PureHuffmanCompressionModel.h>
 #include <FemtoZipCompressionModel.h>
-#include <GZipCompressionModel.h>
-#include <GZipDictionaryCompressionModel.h>
 #include <DataIO.h>
 #include <femtozip.h>
 #include <IntSet.h>
@@ -65,9 +65,12 @@ void assertTrue(bool result, const string& message) {
 }
 
 long long getTimeMillis() {
+	return 42;
+#if 0	
     timeval tim;
     gettimeofday(&tim, NULL);
     return tim.tv_sec * 1000 + tim.tv_usec / 1000;
+#endif
 }
 
 void reportTestResults() {
@@ -348,10 +351,6 @@ void testCompressionModels() {
     testModel(PreambleString.c_str(), PreambleDictionary.c_str(), pureHuffman, pureHuffman1, 211);
     FemtoZipCompressionModel offsetNibble, offsetNibble1;
     testModel(PreambleString.c_str(), PreambleDictionary.c_str(), offsetNibble, offsetNibble1, 205);
-    GZipCompressionModel gzipModel, gzipModel1;
-    testModel(PreambleString.c_str(), PreambleDictionary.c_str(), gzipModel, gzipModel1, 210);
-    GZipDictionaryCompressionModel gzipDictModel, gzipDictModel1;
-    testModel(PreambleString.c_str(), PreambleDictionary.c_str(), gzipDictModel, gzipDictModel1, 204);
 }
 
 void testAllBytes() {
@@ -428,19 +427,6 @@ void testModelOptimization() {
     }
 }
 
-void testGZipModel() {
-    GZipCompressionModel model;
-    ostringstream out;
-    const char *buf = "1111111111111111111111111111111112111111";
-    model.compress(buf, strlen(buf), out);
-    string compressed = out.str();
-
-    ostringstream out2;
-    model.decompress(compressed.c_str(), compressed.length(), out2);
-    string decompressed = out2.str();
-
-    assertTrue(decompressed == buf, string("GZ round trip failed") + decompressed);
-}
 
 void testDataIO() {
 
@@ -512,6 +498,7 @@ void *runThread(void *data) {
 }
 
 void testThreadedCompressionModel(CompressionModel *model) {
+#ifndef WIN32
     vector<char> dict;
     for (int i = 0, count = 256 + (rand() % 64); i < count; i++) {
         dict.push_back('a' + (rand() % 26));
@@ -534,15 +521,12 @@ void testThreadedCompressionModel(CompressionModel *model) {
     for (int i = 0; i < 5; i++) {
         pthread_join(threads[i], 0);
     }
+#endif
 }
 
 void testMultiThreading() {
     PureHuffmanCompressionModel pureHuffman;
     testThreadedCompressionModel(&pureHuffman);
-    GZipCompressionModel gzip;
-    testThreadedCompressionModel(&gzip);
-    GZipDictionaryCompressionModel gzipDict;
-    testThreadedCompressionModel(&gzipDict);
     FemtoZipCompressionModel offsetNibble;
     testThreadedCompressionModel(&offsetNibble);
 }
@@ -749,7 +733,6 @@ int main() {
 
     testModelOptimization();
 
-    testGZipModel();
 
     testDataIO();
 

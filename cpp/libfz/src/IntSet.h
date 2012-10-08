@@ -109,7 +109,7 @@ public:
         }
     }
 };
-const float IntSet::load_factor = 0.7;
+
 
 }
 

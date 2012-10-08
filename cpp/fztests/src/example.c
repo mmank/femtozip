@@ -20,7 +20,8 @@
  */
 
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
+#include <memory.h>
 #include <femtozip.h>
 
 const char *example_get_doc_callback(int doc_index, int *doc_len, void *user_data) {
@@ -39,7 +40,7 @@ int exampleCApi() {
             "http:www.stanford.edu"};
     int num_docs = sizeof(train_docs) / sizeof(train_docs[0]);
 
-    void *model = fz_build_model(num_docs, example_get_doc_callback, example_release_doc_callback, train_docs);
+    void *model = (void *)fz_build_model(num_docs, example_get_doc_callback, example_release_doc_callback, train_docs);
 
     char compressed[1024];
     const char *test_doc = "check out http://www.facebook.com/someone";
@@ -47,6 +48,8 @@ int exampleCApi() {
     if (compressed_len < 0) {
         return 1;
     }
+	
+	{
 
     char decompressed[1024];
     int decompressed_len = fz_decompress(model, compressed, compressed_len, decompressed, sizeof(decompressed));
@@ -58,6 +61,7 @@ int exampleCApi() {
     }
 
     fz_release_model(model);
+	}
     return 0;
 }
 

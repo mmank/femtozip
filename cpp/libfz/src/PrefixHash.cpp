@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <stdio.h>
 #include "PrefixHash.h"
 
 using namespace std;

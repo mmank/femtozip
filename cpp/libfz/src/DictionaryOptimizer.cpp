@@ -25,6 +25,7 @@
 #include <set>
 #include <algorithm>
 #include <string>
+#include <string.h>
 #include "DictionaryOptimizer.h"
 #include "DocumentList.h"
 #include "Substring.h"
@@ -35,6 +36,9 @@
 using namespace std;
 
 namespace femtozip {
+
+const float IntSet::load_factor = 0.7;
+
 
 DictionaryOptimizer::DictionaryOptimizer(DocumentList& documents) {
     for (int i = 0; i < documents.size(); i++) {
