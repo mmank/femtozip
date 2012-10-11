@@ -16,12 +16,12 @@
 	  <if cond="BUILD=='debug'">on</if>
 	</set>
 	<set var="LIBNAME">
-	  <if cond="BUILD=='release'">libfz</if>
-	  <if cond="BUILD=='debug'">libfzd</if>
+	  <if cond="BUILD=='release'">fz</if>
+	  <if cond="BUILD=='debug'">fzd</if>
 	</set>
 
 	
-	<lib id="libfz">
+	<lib id="fz">
 		<optimize>$(OPTIMIZE_FLAG)</optimize>
 		<debug-info>$(DEBUG_FLAG)</debug-info>
 		<debug-runtime-libs>$(DEBUG_FLAG)</debug-runtime-libs>
@@ -58,7 +58,7 @@
 		<debug-info>$(DEBUG_FLAG)</debug-info>
 		<debug-runtime-libs>$(DEBUG_FLAG)</debug-runtime-libs>
 		<debug-info-edit-and-continue>$(DEBUG_FLAG)</debug-info-edit-and-continue>
-		<library>libfz</library>
+		<library>fz</library>
 		<sources>fztests/src/fztests.cpp fztests/src/example.c</sources>
 		<include>./libfz/src</include>
 	</exe>
